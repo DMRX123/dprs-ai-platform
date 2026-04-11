@@ -2,14 +2,16 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { generateSEOMetadata } from '../lib/seo'
 
+// Fix: Change 'type' from 'service' to 'website'
 export const metadata: Metadata = generateSEOMetadata({
   title: 'Our Development Services - Web, Flutter, Mobile Apps',
   description: 'Professional web development, Flutter app development, iOS, Android, and Windows application services. Get custom solutions.',
   keywords: ['web development services', 'flutter development', 'mobile app development'],
   slug: 'services',
-  type: 'service',
+  type: 'website', // ✅ Fixed: 'service' is not valid, must be 'website', 'article', etc.
 })
 
+// Rest of your service page component remains the same...
 const servicesList = [
   {
     slug: 'web-development',

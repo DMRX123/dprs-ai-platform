@@ -1,46 +1,43 @@
 // scripts/submit-to-google.js
-// Auto-submit sitemap to Google for faster indexing
-
 const https = require('https')
-const { exec } = require('child_process')
 
 const sitemapUrl = 'https://dprs.in/sitemap.xml'
-const bingSitemapUrl = `https://www.bing.com/ping?sitemap=${encodeURIComponent(sitemapUrl)}`
-const googleSearchConsoleUrl = `https://www.google.com/ping?sitemap=${encodeURIComponent(sitemapUrl)}`
 
 console.log('🚀 Submitting sitemap to search engines...')
 console.log(`📝 Sitemap URL: ${sitemapUrl}`)
 
-// Submit to Google
-https.get(googleSearchConsoleUrl, (res) => {
+// First verify sitemap exists
+https.get(sitemapUrl, (res) => {
   if (res.statusCode === 200) {
-    console.log('✅ Sitemap submitted to Google successfully!')
+    console.log('✅ Sitemap found! Submitting to search engines...')
+    
+    // Submit to Google
+    const googleUrl = `https://www.google.com/ping?sitemap=${encodeURIComponent(sitemapUrl)}`
+    https.get(googleUrl, (googleRes) => {
+      console.log(`📤 Google submission: ${googleRes.statusCode}`)
+    }).on('error', (err) => {
+      console.log(`❌ Google error: ${err.message}`)
+    })
+    
+    // Submit to Bing
+    const bingUrl = `https://www.bing.com/ping?sitemap=${encodeURIComponent(sitemapUrl)}`
+    https.get(bingUrl, (bingRes) => {
+      console.log(`📤 Bing submission: ${bingRes.statusCode}`)
+    }).on('error', (err) => {
+      console.log(`❌ Bing error: ${err.message}`)
+    })
+    
+    // Submit to Yandex
+    const yandexUrl = `https://webmaster.yandex.com/ping?sitemap=${encodeURIComponent(sitemapUrl)}`
+    https.get(yandexUrl, (yandexRes) => {
+      console.log(`📤 Yandex submission: ${yandexRes.statusCode}`)
+    }).on('error', () => {})
+    
+    console.log('✨ Sitemap submission complete!')
   } else {
-    console.log(`⚠️ Google submission responded with status: ${res.statusCode}`)
+    console.log(`❌ Sitemap not found (${res.statusCode}). Run 'npm run build' first.`)
   }
 }).on('error', (err) => {
-  console.log(`❌ Error submitting to Google: ${err.message}`)
+  console.log(`❌ Cannot reach sitemap: ${err.message}`)
+  console.log('💡 Make sure you have built the project: npm run build')
 })
-
-// Submit to Bing
-https.get(bingSitemapUrl, (res) => {
-  if (res.statusCode === 200) {
-    console.log('✅ Sitemap submitted to Bing successfully!')
-  } else {
-    console.log(`⚠️ Bing submission responded with status: ${res.statusCode}`)
-  }
-}).on('error', (err) => {
-  console.log(`❌ Error submitting to Bing: ${err.message}`)
-})
-
-// Optional: Also ping Yandex
-const yandexUrl = `https://webmaster.yandex.com/ping?sitemap=${encodeURIComponent(sitemapUrl)}`
-https.get(yandexUrl, (res) => {
-  if (res.statusCode === 200) {
-    console.log('✅ Sitemap submitted to Yandex successfully!')
-  }
-}).on('error', () => {})
-
-console.log('✨ Sitemap submission complete!')
-console.log('📊 Check Google Search Console for indexing status:')
-console.log('   https://search.google.com/search-console')
