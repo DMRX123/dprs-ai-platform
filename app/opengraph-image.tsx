@@ -19,7 +19,6 @@ export default function Image() {
           padding: '40px',
         }}
       >
-        {/* Logo Circle */}
         <div
           style={{
             width: '120px',
@@ -35,7 +34,6 @@ export default function Image() {
           <span style={{ fontSize: '60px', color: 'white' }}>D</span>
         </div>
         
-        {/* Title */}
         <div
           style={{
             fontSize: '56px',
@@ -50,7 +48,6 @@ export default function Image() {
           DPRS Developers
         </div>
         
-        {/* Description */}
         <div
           style={{
             fontSize: '28px',
@@ -63,7 +60,6 @@ export default function Image() {
           Web & Flutter Development Experts
         </div>
         
-        {/* Tagline */}
         <div
           style={{
             fontSize: '20px',
@@ -74,7 +70,6 @@ export default function Image() {
           Custom Websites • Mobile Apps • Cross-Platform Solutions
         </div>
         
-        {/* URL */}
         <div
           style={{
             fontSize: '18px',

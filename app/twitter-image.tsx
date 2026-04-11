@@ -19,7 +19,6 @@ export default function Image() {
           padding: '40px',
         }}
       >
-        {/* Logo */}
         <div
           style={{
             width: '100px',
@@ -35,7 +34,6 @@ export default function Image() {
           <span style={{ fontSize: '50px', color: 'white' }}>D</span>
         </div>
         
-        {/* Title */}
         <div
           style={{
             fontSize: '48px',
@@ -50,7 +48,6 @@ export default function Image() {
           DPRS Developers
         </div>
         
-        {/* Description */}
         <div
           style={{
             fontSize: '24px',
@@ -63,7 +60,6 @@ export default function Image() {
           Professional Web & Flutter Development
         </div>
         
-        {/* CTA */}
         <div
           style={{
             fontSize: '20px',
@@ -74,7 +70,6 @@ export default function Image() {
           Get Your Free Quote Today
         </div>
         
-        {/* URL */}
         <div
           style={{
             fontSize: '16px',
