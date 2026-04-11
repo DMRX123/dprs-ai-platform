@@ -131,13 +131,13 @@ export default function NeuralNetworkBg() {
         if (this.y > height + this.radius) this.y = -this.radius
       }
 
-      draw(ctx: CanvasRenderingContext2D) {
+      draw(ctx: CanvasRenderingContext2D, width: number, height: number) {
         const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius)
         gradient.addColorStop(0, this.color + '20')
         gradient.addColorStop(1, 'transparent')
         
         ctx.fillStyle = gradient
-        ctx.fillRect(0, 0, canvas.width, canvas.height)
+        ctx.fillRect(0, 0, width, height)
       }
     }
 
@@ -173,7 +173,7 @@ export default function NeuralNetworkBg() {
       // Draw orbs (soft background glow)
       orbs.forEach(orb => {
         orb.update(canvas.width, canvas.height)
-        orb.draw(ctx)
+        orb.draw(ctx, canvas.width, canvas.height)
       })
 
       // Draw connections between particles
