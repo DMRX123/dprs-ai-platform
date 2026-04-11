@@ -48,7 +48,7 @@ export default function Footer() {
           <p className="flex items-center justify-center gap-1">
             Made with <Heart className="w-4 h-4 text-[#ff6b6b]" /> by DPRS Developers
           </p>
-          <p className="mt-2">© 2024 DPRS. All rights reserved. | Web & Flutter Development Experts</p>
+          <p className="mt-2">© 2026 DPRS. All rights reserved. | Web & Flutter Development Experts</p>
         </div>
       </div>
     </footer>

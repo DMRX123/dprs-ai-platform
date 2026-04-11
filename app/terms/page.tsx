@@ -148,7 +148,7 @@ export default function TermsOfService() {
             <p>For questions about these Terms:</p>
             <ul className="list-none space-y-2 mt-2">
               <li>📧 Email: <strong className="text-[#4ecdc4]">contact@dprs.in</strong></li>
-              <li>📞 Phone: <strong>+91 XXXXXXXXXX</strong></li>
+              <li>📞 Phone: <strong>+91 8839094644</strong></li>
             </ul>
           </section>
 

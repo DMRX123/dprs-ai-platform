@@ -85,8 +85,8 @@ export const SOCIAL_LINKS = {
 // Contact Info
 export const CONTACT_INFO = {
   email: 'contact@dprs.in',
-  phone: '+91 XXXXXXXXXX',
-  whatsapp: '+91 XXXXXXXXXX',
+  phone: '+91 8839094644',
+  whatsapp: '+91 8839094644',
   address: 'India (Remote)',
   responseTime: '24 hours',
 } as const

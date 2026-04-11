@@ -60,7 +60,7 @@ export default function ContactSection() {
                 <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[#ff6b6b] to-[#4ecdc4] flex items-center justify-center">
                   <Phone className="w-6 h-6" />
                 </div>
-                <div><p className="text-sm text-gray-400">Phone / WhatsApp</p><p className="font-semibold">+91 XXXXXXXXXX</p></div>
+                <div><p className="text-sm text-gray-400">Phone / WhatsApp</p><p className="font-semibold">+91 8839094644</p></div>
               </div>
             </div>
             <div className="glass-card p-6 scroll-reveal">
