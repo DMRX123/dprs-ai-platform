@@ -36,13 +36,13 @@ export const metadata: Metadata = {
     siteName: 'DPRS Developers',
     title: 'DPRS - #1 Web & Flutter Development Agency',
     description: 'Get professional web development and Flutter app development services. Free consultation and quote.',
-    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'DPRS Developers' }],
+    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: 'DPRS Developers' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'DPRS - Web & Flutter Development Experts',
     description: 'Top-rated development agency for web and mobile apps',
-    images: ['/twitter-image.jpg'],
+    images: ['/twitter-image'],
     creator: '@dprs',
   },
   alternates: {
@@ -50,23 +50,22 @@ export const metadata: Metadata = {
   },
   category: 'technology',
   verification: {
-    google: 'your-google-verification-code', // IMPORTANT: Replace with your actual code from Google Search Console
+    google: 'your-google-verification-code',
   },
 }
 
-// Updated viewport for better accessibility (removed scale restrictions)
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
 }
 
-// --- Static Schema Markup (Always loaded, great for SEO) ---
+// Static Organization Schema
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
   name: 'DPRS Developers',
   url: 'https://dprs.in',
-  logo: 'https://dprs.in/logo.png',
+  logo: 'https://dprs.in/opengraph-image',
   description: 'Professional Web Development and Flutter App Development Agency',
   address: {
     '@type': 'PostalAddress',
@@ -75,9 +74,9 @@ const organizationSchema = {
   },
   contactPoint: {
     '@type': 'ContactPoint',
-    telephone: '+91 8839094644', // Updated to match your site
+    telephone: '+91 8839094644',
     contactType: 'customer service',
-    email: 'contact@dprs.in',   // Added for clarity
+    email: 'contact@dprs.in',
     availableLanguage: ['English', 'Hindi'],
   },
   sameAs: [
@@ -94,7 +93,7 @@ const localBusinessSchema = {
   '@context': 'https://schema.org',
   '@type': 'LocalBusiness',
   name: 'DPRS Developers',
-  image: 'https://dprs.in/og-image.jpg',
+  image: 'https://dprs.in/opengraph-image',
   priceRange: '₹₹',
   telephone: '+91 8839094644',
   email: 'contact@dprs.in',
@@ -125,7 +124,6 @@ const websiteSchema = {
     'query-input': 'required name=search_term_string',
   },
 }
-// --- End of Static Schema ---
 
 export default function RootLayout({
   children,
@@ -139,7 +137,14 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         
-        {/* Inject Static Schema directly into the head */}
+        {/* Favicon - Data URI SVG */}
+        <link
+          rel="icon"
+          href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='url(%23gradient)'/%3E%3Cdefs%3E%3ClinearGradient id='gradient' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23ff6b6b'/%3E%3Cstop offset='100%25' style='stop-color:%234ecdc4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ctext x='50' y='68' font-size='50' text-anchor='middle' fill='white' font-family='Arial'%3ED%3C/text%3E%3C/svg%3E"
+          type="image/svg+xml"
+        />
+        
+        {/* Static Schema */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
@@ -154,7 +159,7 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        <SchemaScript /> {/* This handles more dynamic schemas like FAQ, BreadcrumbList */}
+        <SchemaScript />
         {children}
       </body>
     </html>
