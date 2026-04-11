@@ -31,15 +31,6 @@ export default function HomePage() {
     }
   }, [])
 
-  // Set section IDs for navigation
-  useEffect(() => {
-    const sections = ['home', 'services', 'portfolio', 'quote', 'contact']
-    sections.forEach(id => {
-      const element = document.getElementById(id)
-      if (element) return
-    })
-  }, [])
-
   return (
     <div className="min-h-screen bg-[#05050a]">
       <section id="home">

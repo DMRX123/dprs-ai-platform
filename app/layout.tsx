@@ -11,13 +11,8 @@ export const metadata: Metadata = {
     default: 'DPRS - Web & Flutter Development | #1 Development Agency',
     template: '%s | DPRS Developers'
   },
-  description: 'Top-rated web development and Flutter app development agency. Get custom websites, mobile apps, and cross-platform solutions. 100% client satisfaction guaranteed.',
-  keywords: [
-    'web development', 'flutter developer', 'app development', 'website design', 
-    'cross-platform apps', 'iOS development', 'Android development', 
-    'ecommerce website', 'responsive web design', 'best web developer',
-    'top app development company', 'hire flutter developer', 'custom website'
-  ],
+  description: 'Top-rated web development and Flutter app development agency. Get custom websites, mobile apps, and cross-platform solutions.',
+  keywords: ['web development', 'flutter developer', 'app development', 'website design', 'cross-platform apps'],
   authors: [{ name: 'DPRS Team', url: 'https://dprs.in' }],
   creator: 'DPRS',
   publisher: 'DPRS Developers',
@@ -27,7 +22,6 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
       'max-image-preview': 'large',
       'max-snippet': -1,
     },
@@ -38,7 +32,7 @@ export const metadata: Metadata = {
     url: 'https://dprs.in',
     siteName: 'DPRS Developers',
     title: 'DPRS - #1 Web & Flutter Development Agency',
-    description: 'Get professional web development and Flutter app development services. Free consultation and quote.',
+    description: 'Get professional web development and Flutter app development services.',
     images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: 'DPRS Developers' }],
   },
   twitter: {
@@ -51,7 +45,6 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://dprs.in',
   },
-  category: 'technology',
 }
 
 export const viewport: Viewport = {
@@ -139,14 +132,12 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         
-        {/* Favicon - Data URI SVG */}
         <link
           rel="icon"
           href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='url(%23gradient)'/%3E%3Cdefs%3E%3ClinearGradient id='gradient' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23ff6b6b'/%3E%3Cstop offset='100%25' style='stop-color:%234ecdc4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ctext x='50' y='68' font-size='50' text-anchor='middle' fill='white' font-family='Arial'%3ED%3C/text%3E%3C/svg%3E"
           type="image/svg+xml"
         />
         
-        {/* Static Schema */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
@@ -160,7 +151,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
-      <body className="antialiased">
+      <body className="antialiased" style={{ background: 'transparent' }}>
         <NeuralNetworkBg />
         <Navbar />
         <main>

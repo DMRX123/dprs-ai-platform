@@ -12,7 +12,6 @@ export default function NeuralNetworkBg() {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    // Set canvas size
     const setCanvasSize = () => {
       canvas.width = window.innerWidth
       canvas.height = window.innerHeight
@@ -20,10 +19,12 @@ export default function NeuralNetworkBg() {
     setCanvasSize()
     window.addEventListener('resize', setCanvasSize)
 
-    // Beautiful color palette
-    const colors = ['#4ecdc4', '#ff6b6b', '#00f3ff', '#9b59b6', '#f39c12', '#1abc9c', '#e74c3c', '#3498db']
+    // Soft, elegant colors
+    const colors = [
+      '#4ecdc4', '#ff6b6b', '#00f3ff', '#9b59b6', 
+      '#f39c12', '#1abc9c', '#e74c3c', '#3498db'
+    ]
 
-    // Particle class
     class Particle {
       x: number
       y: number
@@ -31,7 +32,6 @@ export default function NeuralNetworkBg() {
       vy: number
       radius: number
       color: string
-      alpha: number
       originalX: number
       originalY: number
       pulsePhase: number
@@ -41,50 +41,46 @@ export default function NeuralNetworkBg() {
         this.y = Math.random() * height
         this.originalX = this.x
         this.originalY = this.y
-        this.vx = (Math.random() - 0.5) * 0.2
-        this.vy = (Math.random() - 0.5) * 0.2
-        this.radius = Math.random() * 2.5 + 1.5
+        this.vx = (Math.random() - 0.5) * 0.15
+        this.vy = (Math.random() - 0.5) * 0.15
+        this.radius = Math.random() * 2 + 1.5
         this.color = colors[Math.floor(Math.random() * colors.length)]
-        this.alpha = Math.random() * 0.5 + 0.3
         this.pulsePhase = Math.random() * Math.PI * 2
       }
 
       update(width: number, height: number) {
         this.x += this.vx
         this.y += this.vy
-        this.x += (this.originalX - this.x) * 0.01
-        this.y += (this.originalY - this.y) * 0.01
+        this.x += (this.originalX - this.x) * 0.008
+        this.y += (this.originalY - this.y) * 0.008
         
         if (this.x < 0) this.x = width
         if (this.x > width) this.x = 0
         if (this.y < 0) this.y = height
         if (this.y > height) this.y = 0
         
-        this.pulsePhase += 0.03
+        this.pulsePhase += 0.02
       }
 
       draw(ctx: CanvasRenderingContext2D) {
-        const pulseScale = 0.8 + Math.sin(this.pulsePhase) * 0.3
+        const pulseScale = 0.85 + Math.sin(this.pulsePhase) * 0.15
         const currentRadius = this.radius * pulseScale
         
         ctx.beginPath()
         ctx.arc(this.x, this.y, currentRadius, 0, Math.PI * 2)
         ctx.fillStyle = this.color
-        ctx.shadowBlur = 10
+        ctx.shadowBlur = 8
         ctx.shadowColor = this.color
         ctx.fill()
         ctx.shadowBlur = 0
       }
     }
 
-    // Create particles
-    const particleCount = 100
     const particles: Particle[] = []
-    for (let i = 0; i < particleCount; i++) {
+    for (let i = 0; i < 100; i++) {
       particles.push(new Particle(canvas.width, canvas.height))
     }
 
-    // Orb class for background
     class Orb {
       x: number
       y: number
@@ -96,16 +92,16 @@ export default function NeuralNetworkBg() {
       constructor(width: number, height: number) {
         this.x = Math.random() * width
         this.y = Math.random() * height
-        this.radius = Math.random() * 80 + 40
+        this.radius = Math.random() * 120 + 60
         this.color = colors[Math.floor(Math.random() * colors.length)]
         this.angle = Math.random() * Math.PI * 2
-        this.speed = 0.002 + Math.random() * 0.003
+        this.speed = 0.001 + Math.random() * 0.002
       }
 
       update(width: number, height: number) {
         this.angle += this.speed
-        this.x += Math.sin(this.angle) * 0.2
-        this.y += Math.cos(this.angle * 0.7) * 0.2
+        this.x += Math.sin(this.angle) * 0.15
+        this.y += Math.cos(this.angle * 0.6) * 0.15
         
         if (this.x < -this.radius) this.x = width + this.radius
         if (this.x > width + this.radius) this.x = -this.radius
@@ -115,7 +111,7 @@ export default function NeuralNetworkBg() {
 
       draw(ctx: CanvasRenderingContext2D, width: number, height: number) {
         const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius)
-        gradient.addColorStop(0, this.color + '20')
+        gradient.addColorStop(0, this.color + '15')
         gradient.addColorStop(1, 'transparent')
         
         ctx.fillStyle = gradient
@@ -123,13 +119,11 @@ export default function NeuralNetworkBg() {
       }
     }
 
-    // Create orbs
     const orbs: Orb[] = []
     for (let i = 0; i < 4; i++) {
       orbs.push(new Orb(canvas.width, canvas.height))
     }
 
-    // Mouse position
     let mouseX = -1000
     let mouseY = -1000
 
@@ -151,17 +145,14 @@ export default function NeuralNetworkBg() {
     const draw = () => {
       if (!ctx || !canvas) return
 
-      // Clear with fade
-      ctx.fillStyle = 'rgba(5, 5, 10, 0.08)'
+      ctx.fillStyle = 'rgba(5, 5, 10, 0.06)'
       ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-      // Draw orbs
       for (const orb of orbs) {
         orb.update(canvas.width, canvas.height)
         orb.draw(ctx, canvas.width, canvas.height)
       }
 
-      // Draw connections
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const p1 = particles[i]
@@ -170,35 +161,28 @@ export default function NeuralNetworkBg() {
           const dy = p1.y - p2.y
           const distance = Math.sqrt(dx * dx + dy * dy)
           
-          if (distance < 100) {
-            const opacity = (1 - distance / 100) * 0.15
+          if (distance < 90) {
+            const opacity = (1 - distance / 90) * 0.12
             ctx.beginPath()
             ctx.moveTo(p1.x, p1.y)
             ctx.lineTo(p2.x, p2.y)
-            
-            const gradient = ctx.createLinearGradient(p1.x, p1.y, p2.x, p2.y)
-            gradient.addColorStop(0, p1.color)
-            gradient.addColorStop(1, p2.color)
-            
-            ctx.strokeStyle = gradient
+            ctx.strokeStyle = p1.color
             ctx.globalAlpha = opacity
-            ctx.lineWidth = 0.8
+            ctx.lineWidth = 0.6
             ctx.stroke()
             ctx.globalAlpha = 1
           }
         }
       }
 
-      // Draw particles
       for (const particle of particles) {
         particle.update(canvas.width, canvas.height)
         particle.draw(ctx)
       }
 
-      // Mouse glow
       if (mouseX > 0 && mouseX < canvas.width && mouseY > 0 && mouseY < canvas.height) {
-        const mouseGradient = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 150)
-        mouseGradient.addColorStop(0, 'rgba(78, 205, 196, 0.08)')
+        const mouseGradient = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 180)
+        mouseGradient.addColorStop(0, 'rgba(78, 205, 196, 0.06)')
         mouseGradient.addColorStop(1, 'transparent')
         ctx.fillStyle = mouseGradient
         ctx.fillRect(0, 0, canvas.width, canvas.height)
@@ -217,5 +201,5 @@ export default function NeuralNetworkBg() {
     }
   }, [])
 
-  return <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none" />
+  return <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none" suppressHydrationWarning />
 }

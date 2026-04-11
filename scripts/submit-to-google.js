@@ -27,12 +27,6 @@ https.get(sitemapUrl, (res) => {
       console.log(`❌ Bing error: ${err.message}`)
     })
     
-    // Submit to Yandex
-    const yandexUrl = `https://webmaster.yandex.com/ping?sitemap=${encodeURIComponent(sitemapUrl)}`
-    https.get(yandexUrl, (yandexRes) => {
-      console.log(`📤 Yandex submission: ${yandexRes.statusCode}`)
-    }).on('error', () => {})
-    
     console.log('✨ Sitemap submission complete!')
   } else {
     console.log(`❌ Sitemap not found (${res.statusCode}). Run 'npm run build' first.`)

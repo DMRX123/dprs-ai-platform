@@ -14,7 +14,7 @@
   }
 
   body {
-    background: #05050a;
+    background: transparent;
     color: #ffffff;
     overflow-x: hidden;
     font-family: 'Inter', sans-serif;
@@ -28,7 +28,6 @@
 }
 
 @layer components {
-  /* Enhanced Glass Card */
   .glass-card {
     background: rgba(10, 10, 20, 0.6);
     -webkit-backdrop-filter: blur(12px);
@@ -46,7 +45,6 @@
     transform: translateY(-4px);
   }
 
-  /* Scroll Reveal Animation */
   .scroll-reveal {
     opacity: 0;
     transform: translateY(50px);
@@ -58,7 +56,6 @@
     transform: translateY(0);
   }
 
-  /* Custom Scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
   }
@@ -70,7 +67,6 @@
     border-radius: 10px;
   }
 
-  /* Glowing Button Effect */
   .glow-on-hover {
     position: relative;
     overflow: hidden;
@@ -93,7 +89,6 @@
 }
 
 @layer utilities {
-  /* Animated Gradient Text */
   .gradient-text {
     background: linear-gradient(135deg, #ff6b6b, #4ecdc4, #00f3ff, #ff6b6b);
     background-size: 300% 200%;

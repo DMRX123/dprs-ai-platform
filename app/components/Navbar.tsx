@@ -55,7 +55,6 @@ export default function Navbar() {
             </h1>
           </div>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
               <button
@@ -74,7 +73,6 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* Mobile Menu Button */}
           <button
             type="button"
             title="Menu"
@@ -87,7 +85,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
       {isOpen && (
         <div className="md:hidden bg-black/95 backdrop-blur-xl">
           <div className="px-4 pt-4 pb-6 space-y-4">

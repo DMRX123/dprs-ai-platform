@@ -1,35 +1,35 @@
-import { Metadata } from 'next'
 import Link from 'next/link'
-import { generateSEOMetadata } from '../lib/seo'
+import { generateSEOMetadata } from '../../lib/seo'
 
-// Fix: Change 'type' from 'service' to 'website'
-export const metadata: Metadata = generateSEOMetadata({
+export const metadata = generateSEOMetadata({
   title: 'Our Development Services - Web, Flutter, Mobile Apps',
   description: 'Professional web development, Flutter app development, iOS, Android, and Windows application services. Get custom solutions.',
   keywords: ['web development services', 'flutter development', 'mobile app development'],
   slug: 'services',
-  type: 'website', // ✅ Fixed: 'service' is not valid, must be 'website', 'article', etc.
+  type: 'website',
 })
 
-// Rest of your service page component remains the same...
 const servicesList = [
   {
     slug: 'web-development',
     title: 'Web Development',
     description: 'Custom websites with modern technologies like Next.js, React, and Node.js',
     features: ['Responsive Design', 'SEO Optimized', 'Fast Performance', 'E-commerce Ready'],
+    price: 'From ₹25,000',
   },
   {
     slug: 'flutter-apps',
     title: 'Flutter App Development',
     description: 'Cross-platform mobile apps for iOS and Android from single codebase',
     features: ['iOS & Android', 'Native Performance', 'Beautiful UI', 'Fast Development'],
+    price: 'From ₹35,000',
   },
   {
     slug: 'ecommerce',
     title: 'E-commerce Solutions',
     description: 'Complete online stores with payment gateway and inventory management',
     features: ['Payment Integration', 'Product Management', 'Order Tracking', 'Admin Panel'],
+    price: 'From ₹40,000',
   },
 ]
 
@@ -51,6 +51,9 @@ export default function ServicesPage() {
             <div key={index} className="glass-card p-8 hover:transform hover:-translate-y-2 transition-all duration-300">
               <h2 className="text-2xl font-bold mb-3 gradient-text">{service.title}</h2>
               <p className="text-gray-300 mb-4">{service.description}</p>
+              <div className="mb-4">
+                <span className="text-[#4ecdc4] font-bold">{service.price}</span>
+              </div>
               <ul className="space-y-2 mb-6">
                 {service.features.map((feature, i) => (
                   <li key={i} className="flex items-center gap-2 text-gray-400">
@@ -58,8 +61,8 @@ export default function ServicesPage() {
                   </li>
                 ))}
               </ul>
-              <Link href={`/services/${service.slug}`} className="inline-block text-[#4ecdc4] hover:underline">
-                Learn More →
+              <Link href={`/#quote`} className="inline-block w-full text-center px-4 py-2 bg-gradient-to-r from-[#ff6b6b] to-[#4ecdc4] rounded-full font-semibold hover:scale-105 transition">
+                Get Quote →
               </Link>
             </div>
           ))}
