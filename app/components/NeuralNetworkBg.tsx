@@ -21,16 +21,7 @@ export default function NeuralNetworkBg() {
     window.addEventListener('resize', setCanvasSize)
 
     // Beautiful color palette
-    const colors = [
-      '#4ecdc4',  // Teal
-      '#ff6b6b',  // Coral
-      '#00f3ff',  // Cyan
-      '#9b59b6',  // Purple
-      '#f39c12',  // Orange
-      '#1abc9c',  // Mint
-      '#e74c3c',  // Red
-      '#3498db',  // Blue
-    ]
+    const colors = ['#4ecdc4', '#ff6b6b', '#00f3ff', '#9b59b6', '#f39c12', '#1abc9c', '#e74c3c', '#3498db']
 
     // Particle class
     class Particle {
@@ -59,21 +50,16 @@ export default function NeuralNetworkBg() {
       }
 
       update(width: number, height: number) {
-        // Gentle floating motion
         this.x += this.vx
         this.y += this.vy
-        
-        // Return to original position slowly
         this.x += (this.originalX - this.x) * 0.01
         this.y += (this.originalY - this.y) * 0.01
         
-        // Boundary check
         if (this.x < 0) this.x = width
         if (this.x > width) this.x = 0
         if (this.y < 0) this.y = height
         if (this.y > height) this.y = 0
         
-        // Update pulse
         this.pulsePhase += 0.03
       }
 
@@ -87,35 +73,31 @@ export default function NeuralNetworkBg() {
         ctx.shadowBlur = 10
         ctx.shadowColor = this.color
         ctx.fill()
-        
-        // Reset shadow
         ctx.shadowBlur = 0
       }
     }
 
     // Create particles
-    const particleCount = 120
+    const particleCount = 100
     const particles: Particle[] = []
     for (let i = 0; i < particleCount; i++) {
       particles.push(new Particle(canvas.width, canvas.height))
     }
 
-    // Animate floating orbs (large background elements)
+    // Orb class for background
     class Orb {
       x: number
       y: number
       radius: number
       color: string
-      alpha: number
       angle: number
       speed: number
 
       constructor(width: number, height: number) {
         this.x = Math.random() * width
         this.y = Math.random() * height
-        this.radius = Math.random() * 100 + 50
+        this.radius = Math.random() * 80 + 40
         this.color = colors[Math.floor(Math.random() * colors.length)]
-        this.alpha = 0.03
         this.angle = Math.random() * Math.PI * 2
         this.speed = 0.002 + Math.random() * 0.003
       }
@@ -143,40 +125,43 @@ export default function NeuralNetworkBg() {
 
     // Create orbs
     const orbs: Orb[] = []
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 4; i++) {
       orbs.push(new Orb(canvas.width, canvas.height))
     }
 
-    // Mouse interaction
+    // Mouse position
     let mouseX = -1000
     let mouseY = -1000
 
-    canvas.addEventListener('mousemove', (e) => {
+    const handleMouseMove = (e: MouseEvent) => {
       mouseX = e.clientX
       mouseY = e.clientY
-    })
+    }
 
-    canvas.addEventListener('mouseleave', () => {
+    const handleMouseLeave = () => {
       mouseX = -1000
       mouseY = -1000
-    })
+    }
+
+    canvas.addEventListener('mousemove', handleMouseMove)
+    canvas.addEventListener('mouseleave', handleMouseLeave)
 
     let animationId: number
 
     const draw = () => {
       if (!ctx || !canvas) return
 
-      // Clear with fade effect
+      // Clear with fade
       ctx.fillStyle = 'rgba(5, 5, 10, 0.08)'
       ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-      // Draw orbs (soft background glow)
-      orbs.forEach(orb => {
+      // Draw orbs
+      for (const orb of orbs) {
         orb.update(canvas.width, canvas.height)
         orb.draw(ctx, canvas.width, canvas.height)
-      })
+      }
 
-      // Draw connections between particles
+      // Draw connections
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const p1 = particles[i]
@@ -191,25 +176,26 @@ export default function NeuralNetworkBg() {
             ctx.moveTo(p1.x, p1.y)
             ctx.lineTo(p2.x, p2.y)
             
-            // Gradient line
             const gradient = ctx.createLinearGradient(p1.x, p1.y, p2.x, p2.y)
-            gradient.addColorStop(0, p1.color + Math.floor(opacity * 255).toString(16))
-            gradient.addColorStop(1, p2.color + Math.floor(opacity * 255).toString(16))
+            gradient.addColorStop(0, p1.color)
+            gradient.addColorStop(1, p2.color)
             
             ctx.strokeStyle = gradient
+            ctx.globalAlpha = opacity
             ctx.lineWidth = 0.8
             ctx.stroke()
+            ctx.globalAlpha = 1
           }
         }
       }
 
       // Draw particles
-      particles.forEach(particle => {
+      for (const particle of particles) {
         particle.update(canvas.width, canvas.height)
         particle.draw(ctx)
-      })
+      }
 
-      // Draw mouse glow effect
+      // Mouse glow
       if (mouseX > 0 && mouseX < canvas.width && mouseY > 0 && mouseY < canvas.height) {
         const mouseGradient = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 150)
         mouseGradient.addColorStop(0, 'rgba(78, 205, 196, 0.08)')
@@ -225,9 +211,11 @@ export default function NeuralNetworkBg() {
 
     return () => {
       window.removeEventListener('resize', setCanvasSize)
+      canvas.removeEventListener('mousemove', handleMouseMove)
+      canvas.removeEventListener('mouseleave', handleMouseLeave)
       cancelAnimationFrame(animationId)
     }
   }, [])
 
-  return <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full -z-10" />
+  return <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none" />
 }
