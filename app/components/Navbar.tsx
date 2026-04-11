@@ -33,8 +33,8 @@ export default function Navbar() {
   const navItems = [
     { name: 'Home', id: 'home' },
     { name: 'Services', id: 'services' },
-    { name: 'Quote', id: 'quote' },
     { name: 'Portfolio', id: 'portfolio' },
+    { name: 'Quote', id: 'quote' },
     { name: 'Contact', id: 'contact' }
   ]
 

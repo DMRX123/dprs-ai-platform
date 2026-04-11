@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import SchemaScript from './components/SchemaScript'
+import Navbar from './components/Navbar'
+import Footer from './components/Footer'
+import NeuralNetworkBg from './components/NeuralNetworkBg'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://dprs.in'),
@@ -49,14 +52,13 @@ export const metadata: Metadata = {
     canonical: 'https://dprs.in',
   },
   category: 'technology',
-  verification: {
-    google: 'your-google-verification-code',
-  },
 }
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
 }
 
 // Static Organization Schema
@@ -159,8 +161,13 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
+        <NeuralNetworkBg />
+        <Navbar />
+        <main>
+          {children}
+        </main>
+        <Footer />
         <SchemaScript />
-        {children}
       </body>
     </html>
   )
