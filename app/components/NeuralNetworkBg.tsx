@@ -20,7 +20,19 @@ export default function NeuralNetworkBg() {
     setCanvasSize()
     window.addEventListener('resize', setCanvasSize)
 
-    // Particle class for better organization
+    // Beautiful color palette
+    const colors = [
+      '#4ecdc4',  // Teal
+      '#ff6b6b',  // Coral
+      '#00f3ff',  // Cyan
+      '#9b59b6',  // Purple
+      '#f39c12',  // Orange
+      '#1abc9c',  // Mint
+      '#e74c3c',  // Red
+      '#3498db',  // Blue
+    ]
+
+    // Particle class
     class Particle {
       x: number
       y: number
@@ -28,123 +40,143 @@ export default function NeuralNetworkBg() {
       vy: number
       radius: number
       color: string
-      pulse: number
-      pulseSpeed: number
+      alpha: number
+      originalX: number
+      originalY: number
+      pulsePhase: number
 
       constructor(width: number, height: number) {
         this.x = Math.random() * width
         this.y = Math.random() * height
-        this.vx = (Math.random() - 0.5) * 0.5
-        this.vy = (Math.random() - 0.5) * 0.5
-        this.radius = Math.random() * 3 + 1.5
-        this.pulse = Math.random() * Math.PI * 2
-        this.pulseSpeed = 0.02 + Math.random() * 0.03
-        this.color = `hsl(${180 + Math.random() * 60}, 100%, 60%)`
+        this.originalX = this.x
+        this.originalY = this.y
+        this.vx = (Math.random() - 0.5) * 0.2
+        this.vy = (Math.random() - 0.5) * 0.2
+        this.radius = Math.random() * 2.5 + 1.5
+        this.color = colors[Math.floor(Math.random() * colors.length)]
+        this.alpha = Math.random() * 0.5 + 0.3
+        this.pulsePhase = Math.random() * Math.PI * 2
       }
 
-      update(width: number, height: number, mouseX: number, mouseY: number) {
-        // Mouse interaction - repulsion effect
-        const dx = this.x - mouseX
-        const dy = this.y - mouseY
-        const distance = Math.sqrt(dx * dx + dy * dy)
-        
-        if (distance < 150) {
-          const angle = Math.atan2(dy, dx)
-          const force = (150 - distance) / 150 * 0.5
-          this.vx += Math.cos(angle) * force
-          this.vy += Math.sin(angle) * force
-        }
-
-        // Update position
+      update(width: number, height: number) {
+        // Gentle floating motion
         this.x += this.vx
         this.y += this.vy
         
-        // Damping
-        this.vx *= 0.99
-        this.vy *= 0.99
+        // Return to original position slowly
+        this.x += (this.originalX - this.x) * 0.01
+        this.y += (this.originalY - this.y) * 0.01
         
-        // Wrap around edges (continuous flow)
+        // Boundary check
         if (this.x < 0) this.x = width
         if (this.x > width) this.x = 0
         if (this.y < 0) this.y = height
         if (this.y > height) this.y = 0
         
         // Update pulse
-        this.pulse += this.pulseSpeed
+        this.pulsePhase += 0.03
       }
 
       draw(ctx: CanvasRenderingContext2D) {
-        const pulseSize = this.radius + Math.sin(this.pulse) * 1.5
-        const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, pulseSize * 2)
-        gradient.addColorStop(0, this.color)
-        gradient.addColorStop(0.5, `rgba(78, 205, 196, 0.6)`)
-        gradient.addColorStop(1, 'rgba(255, 107, 107, 0)')
+        const pulseScale = 0.8 + Math.sin(this.pulsePhase) * 0.3
+        const currentRadius = this.radius * pulseScale
         
-        ctx.fillStyle = gradient
         ctx.beginPath()
-        ctx.arc(this.x, this.y, pulseSize, 0, Math.PI * 2)
+        ctx.arc(this.x, this.y, currentRadius, 0, Math.PI * 2)
+        ctx.fillStyle = this.color
+        ctx.shadowBlur = 10
+        ctx.shadowColor = this.color
         ctx.fill()
+        
+        // Reset shadow
+        ctx.shadowBlur = 0
       }
     }
 
     // Create particles
-    const particleCount = 200
+    const particleCount = 120
     const particles: Particle[] = []
     for (let i = 0; i < particleCount; i++) {
       particles.push(new Particle(canvas.width, canvas.height))
     }
 
-    // Mouse position tracking
-    let mouseX = canvas.width / 2
-    let mouseY = canvas.height / 2
-    let targetMouseX = mouseX
-    let targetMouseY = mouseY
+    // Animate floating orbs (large background elements)
+    class Orb {
+      x: number
+      y: number
+      radius: number
+      color: string
+      alpha: number
+      angle: number
+      speed: number
+
+      constructor(width: number, height: number) {
+        this.x = Math.random() * width
+        this.y = Math.random() * height
+        this.radius = Math.random() * 100 + 50
+        this.color = colors[Math.floor(Math.random() * colors.length)]
+        this.alpha = 0.03
+        this.angle = Math.random() * Math.PI * 2
+        this.speed = 0.002 + Math.random() * 0.003
+      }
+
+      update(width: number, height: number) {
+        this.angle += this.speed
+        this.x += Math.sin(this.angle) * 0.2
+        this.y += Math.cos(this.angle * 0.7) * 0.2
+        
+        if (this.x < -this.radius) this.x = width + this.radius
+        if (this.x > width + this.radius) this.x = -this.radius
+        if (this.y < -this.radius) this.y = height + this.radius
+        if (this.y > height + this.radius) this.y = -this.radius
+      }
+
+      draw(ctx: CanvasRenderingContext2D) {
+        const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius)
+        gradient.addColorStop(0, this.color + '20')
+        gradient.addColorStop(1, 'transparent')
+        
+        ctx.fillStyle = gradient
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+      }
+    }
+
+    // Create orbs
+    const orbs: Orb[] = []
+    for (let i = 0; i < 5; i++) {
+      orbs.push(new Orb(canvas.width, canvas.height))
+    }
+
+    // Mouse interaction
+    let mouseX = -1000
+    let mouseY = -1000
 
     canvas.addEventListener('mousemove', (e) => {
-      targetMouseX = e.clientX
-      targetMouseY = e.clientY
+      mouseX = e.clientX
+      mouseY = e.clientY
     })
 
-    // Smooth mouse follow
-    let animationId: number
+    canvas.addEventListener('mouseleave', () => {
+      mouseX = -1000
+      mouseY = -1000
+    })
 
-    // Star field background
-    const stars: { x: number; y: number; radius: number; alpha: number }[] = []
-    for (let i = 0; i < 100; i++) {
-      stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        radius: Math.random() * 1.5,
-        alpha: Math.random() * 0.5
-      })
-    }
+    let animationId: number
 
     const draw = () => {
       if (!ctx || !canvas) return
 
-      // Smooth mouse movement
-      mouseX += (targetMouseX - mouseX) * 0.05
-      mouseY += (targetMouseY - mouseY) * 0.05
-
-      // Clear with fade effect (creates trail)
+      // Clear with fade effect
       ctx.fillStyle = 'rgba(5, 5, 10, 0.08)'
       ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-      // Draw stars (static background)
-      stars.forEach(star => {
-        ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha * 0.5})`
-        ctx.beginPath()
-        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2)
-        ctx.fill()
+      // Draw orbs (soft background glow)
+      orbs.forEach(orb => {
+        orb.update(canvas.width, canvas.height)
+        orb.draw(ctx)
       })
 
-      // Update and draw particles
-      particles.forEach(particle => {
-        particle.update(canvas.width, canvas.height, mouseX, mouseY)
-        particle.draw(ctx)
-      })
-
-      // Draw connections between nearby particles
+      // Draw connections between particles
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const p1 = particles[i]
@@ -153,56 +185,46 @@ export default function NeuralNetworkBg() {
           const dy = p1.y - p2.y
           const distance = Math.sqrt(dx * dx + dy * dy)
           
-          if (distance < 150) {
-            const opacity = (1 - distance / 150) * 0.4
-            const gradient = ctx.createLinearGradient(p1.x, p1.y, p2.x, p2.y)
-            gradient.addColorStop(0, `rgba(78, 205, 196, ${opacity})`)
-            gradient.addColorStop(1, `rgba(255, 107, 107, ${opacity})`)
-            
+          if (distance < 100) {
+            const opacity = (1 - distance / 100) * 0.15
             ctx.beginPath()
             ctx.moveTo(p1.x, p1.y)
             ctx.lineTo(p2.x, p2.y)
+            
+            // Gradient line
+            const gradient = ctx.createLinearGradient(p1.x, p1.y, p2.x, p2.y)
+            gradient.addColorStop(0, p1.color + Math.floor(opacity * 255).toString(16))
+            gradient.addColorStop(1, p2.color + Math.floor(opacity * 255).toString(16))
+            
             ctx.strokeStyle = gradient
-            ctx.lineWidth = 1.5
+            ctx.lineWidth = 0.8
             ctx.stroke()
           }
         }
       }
 
+      // Draw particles
+      particles.forEach(particle => {
+        particle.update(canvas.width, canvas.height)
+        particle.draw(ctx)
+      })
+
       // Draw mouse glow effect
-      const mouseGlow = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 100)
-      mouseGlow.addColorStop(0, 'rgba(78, 205, 196, 0.15)')
-      mouseGlow.addColorStop(1, 'rgba(255, 107, 107, 0)')
-      ctx.fillStyle = mouseGlow
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      if (mouseX > 0 && mouseX < canvas.width && mouseY > 0 && mouseY < canvas.height) {
+        const mouseGradient = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 150)
+        mouseGradient.addColorStop(0, 'rgba(78, 205, 196, 0.08)')
+        mouseGradient.addColorStop(1, 'transparent')
+        ctx.fillStyle = mouseGradient
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+      }
 
       animationId = requestAnimationFrame(draw)
     }
 
     draw()
 
-    // Handle window resize
-    const handleResize = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
-      
-      // Reposition stars
-      stars.length = 0
-      for (let i = 0; i < 100; i++) {
-        stars.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          radius: Math.random() * 1.5,
-          alpha: Math.random() * 0.5
-        })
-      }
-    }
-
-    window.addEventListener('resize', handleResize)
-
     return () => {
       window.removeEventListener('resize', setCanvasSize)
-      window.removeEventListener('resize', handleResize)
       cancelAnimationFrame(animationId)
     }
   }, [])
