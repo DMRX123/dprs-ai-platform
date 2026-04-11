@@ -1,0 +1,128 @@
+import { Metadata } from 'next'
+import Link from 'next/link'
+import { generateSEOMetadata } from '../lib/seo'
+
+// Auto SEO for blog page
+export const metadata: Metadata = generateSEOMetadata({
+  title: 'Development Blog - Latest Web & Flutter Insights',
+  description: 'Read latest articles about web development, Flutter apps, and cross-platform solutions. Daily updates with industry trends.',
+  keywords: ['blog', 'development articles', 'web dev tips', 'flutter tutorials'],
+  slug: 'blog',
+  type: 'website',
+})
+
+// Auto-updating blog posts (Add new posts here daily)
+const blogPosts = [
+  {
+    slug: 'why-flutter-is-best-for-cross-platform',
+    title: 'Why Flutter is Best for Cross-Platform Development in 2024',
+    date: new Date().toISOString(),
+    excerpt: 'Discover why Flutter is the top choice for building iOS, Android, and web apps from a single codebase.',
+    author: 'DPRS Team',
+    readTime: '5 min read',
+    tags: ['Flutter', 'Mobile Development', 'Cross-Platform'],
+  },
+  {
+    slug: 'nextjs-vs-react-which-to-choose',
+    title: 'Next.js vs React: Which Framework Should You Choose?',
+    date: new Date().toISOString(),
+    excerpt: 'Compare Next.js and React for your next web project. Learn about SEO, performance, and development experience.',
+    author: 'DPRS Team',
+    readTime: '7 min read',
+    tags: ['Next.js', 'React', 'Web Development'],
+  },
+  {
+    slug: 'top-web-development-trends-2024',
+    title: 'Top Web Development Trends to Watch in 2024',
+    date: new Date().toISOString(),
+    excerpt: 'Stay ahead with these emerging web development trends including AI integration, edge computing, and more.',
+    author: 'DPRS Team',
+    readTime: '6 min read',
+    tags: ['Web Development', 'Trends', 'Technology'],
+  },
+  {
+    slug: 'flutter-vs-react-native-2024',
+    title: 'Flutter vs React Native: Which is Better for Your App?',
+    date: new Date().toISOString(),
+    excerpt: 'Detailed comparison of Flutter and React Native for cross-platform app development.',
+    author: 'DPRS Team',
+    readTime: '8 min read',
+    tags: ['Flutter', 'React Native', 'App Development'],
+  },
+  {
+    slug: 'ecommerce-website-development-guide',
+    title: 'Complete Guide to E-commerce Website Development',
+    date: new Date().toISOString(),
+    excerpt: 'Learn how to build a successful e-commerce website with payment integration and inventory management.',
+    author: 'DPRS Team',
+    readTime: '10 min read',
+    tags: ['E-commerce', 'Web Development', 'Business'],
+  },
+]
+
+export default function BlogPage() {
+  return (
+    <div className="min-h-screen bg-[#05050a] text-white pt-32 pb-20 px-4">
+      <div className="max-w-7xl mx-auto">
+        {/* Hero Section */}
+        <div className="text-center mb-16">
+          <h1 className="text-5xl md:text-6xl font-bold mb-4">
+            <span className="gradient-text">Development Blog</span>
+          </h1>
+          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+            Latest insights, tutorials, and trends in web and mobile development
+          </p>
+        </div>
+
+        {/* Blog Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {blogPosts.map((post, index) => (
+            <Link href={`/blog/${post.slug}`} key={index} className="group">
+              <article className="glass-card p-6 hover:transform hover:-translate-y-2 transition-all duration-300 h-full flex flex-col">
+                <div className="flex flex-wrap gap-2 mb-3">
+                  {post.tags.map((tag, i) => (
+                    <span key={i} className="text-xs px-2 py-1 bg-[#4ecdc4]/20 rounded-full text-[#4ecdc4]">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <h2 className="text-xl font-bold mb-2 group-hover:text-[#4ecdc4] transition-colors">
+                  {post.title}
+                </h2>
+                <div className="flex items-center gap-4 text-sm text-gray-400 mb-3">
+                  <span>{new Date(post.date).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                  <span>{post.readTime}</span>
+                </div>
+                <p className="text-gray-300 mb-4 flex-grow">{post.excerpt}</p>
+                <div className="flex items-center gap-2 text-[#4ecdc4] group-hover:gap-3 transition-all">
+                  <span>Read More</span>
+                  <span>→</span>
+                </div>
+              </article>
+            </Link>
+          ))}
+        </div>
+
+        {/* Schema for blog listing */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Blog',
+              name: 'DPRS Development Blog',
+              description: 'Latest insights in web and mobile development',
+              url: 'https://dprs.in/blog',
+              blogPost: blogPosts.map(post => ({
+                '@type': 'BlogPosting',
+                headline: post.title,
+                datePublished: post.date,
+                author: { '@type': 'Person', name: post.author },
+              })),
+            })
+          }}
+        />
+      </div>
+    </div>
+  )
+}

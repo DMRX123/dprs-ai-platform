@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "submit-sitemap": "node scripts/submit-to-google.js",
+    "generate-blog": "node scripts/auto-blog-generator.js",
+    "seo:update": "npm run submit-sitemap && npm run generate-blog",
+    "seo:daily": "npm run submit-sitemap"
   },
   "dependencies": {
     "lucide-react": "^0.303.0",
