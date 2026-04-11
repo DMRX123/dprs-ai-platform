@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+Sitemap: https://dprs.in/sitemap.xml
+
+# AI Crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# Block bad bots
+User-agent: *
+Disallow: /api/
